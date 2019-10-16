@@ -12,7 +12,10 @@ namespace TicTacToe
         static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         static int player = 1;
         static int choice;
-        static int _flag = 0; //1 = Winner & -1 = Draw 
+        private static string p1Name;
+        private static string p2Name;
+        static int _flag = 0; //1 = Winner & -1 = Draw
+        static Stack<char[]> MovesStack = new Stack<char[]>();
 
 
         static void Main(string[] args)
@@ -37,7 +40,7 @@ namespace TicTacToe
             #endregion
             Console.WriteLine(title.PadLeft(30));
             Board();
-            GetNames(out string p1Name, out string p2Name);
+            GetNames(out p1Name, out p2Name);
             GetP1Symbol(p1Name, p2Name, out string p1Choice);
             var p2Choice = MarkChoice(p1Choice);
 
@@ -45,7 +48,8 @@ namespace TicTacToe
             {
                 Menu(title, p1Name, p2Name, p1Choice, p2Choice);
                 Console.WriteLine();
-                MakeMove(p1Choice, p2Choice);
+                MakeMove(p1Choice, p2Choice, p1Name, p2Name);
+                MovesStack.Push(arr);
                 _flag = CheckWin();
 
             }
@@ -244,8 +248,14 @@ namespace TicTacToe
             playerChoice = Console.ReadLine();
         }
         //Prompts Players to make a move
-        static void MakeMove(string p1Choice, string p2Choice)
+        static void MakeMove(string p1Choice, string p2Choice, string p1Name, string p2Name)
         {
+
+            if (arr.Contains('X') || arr.Contains('O'))
+            {
+                UndoMove();
+                
+            }
 
             Console.Write("Please select a spot 1-9 to put your mark: ");
             choice = int.Parse(Console.ReadLine());
@@ -269,8 +279,10 @@ namespace TicTacToe
                 Console.WriteLine("Please wait for the board to reload...");
                 
             }
+            
 
-
+            
+            //StackMoves(arr, player);
         }
         //Displays Title, Board, and help text 
         static void Menu(string title, string p1Name, string p2Name, string p1Choice, string p2Choice)
@@ -291,11 +303,28 @@ namespace TicTacToe
             Board();
         }
 
-        static void StackMoves(char[] stackArr, int x)
+        static void UndoMove()
         {
-            Stack MovesStack = new Stack();
-            
-            MovesStack.Push(stackArr[x]);
+            string undo = "N";
+
+            if (player % 2 == 0)
+            {
+                Console.WriteLine($"Would you like to go back to {p1Name}'s Turn? (Y/N)");
+                undo = Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine($"Would you like to go back to {p2Name}'s Turn? (Y/N)");
+                undo = Console.ReadLine();
+            }
+
+            if (undo == "Y" || undo == "y")
+            {
+                arr = MovesStack.Pop();
+                player--;
+                
+
+            }
         }
     }
 }
