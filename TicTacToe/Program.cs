@@ -11,10 +11,9 @@ namespace TicTacToe
         static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         static int player = 1;
         static int choice;
-
         static int flag = 0;
-
-
+        
+        
         static void Main(string[] args)
 
         {
@@ -31,25 +30,12 @@ namespace TicTacToe
 ";
 
             Console.WriteLine(title.PadLeft(30));
-            Board();
-            Console.WriteLine("\n");
-            Console.WriteLine("Hello! Please enter your names!");
-            Console.WriteLine("-------------------------------");
-            Console.Write("Player 1: ");
-            String p1Name = Console.ReadLine();
-            Console.Write("Player 2: ");
-            String p2Name = Console.ReadLine();
-            Console.WriteLine("\n");
-            Console.WriteLine("Welcome " + p1Name + " and " + p2Name + "! Lets play some tic-tac-toe!!!");
-            Console.WriteLine("------------------------------------------------------------------------");
-            Console.WriteLine(p1Name + ", would you like to be X's or O's?");
-            string p1Choice = Console.ReadLine();
-            string p2Choice = MarkChoice(p1Choice);
+                Board();
+                GetNames(out string p1Name, out string p2Name);
+                GetP1Symbol(p1Name, p2Name, out string p1Choice);
+                var p2Choice = MarkChoice(p1Choice);
 
-
-
-
-            do
+           do
             {
 
                 Console.Clear();
@@ -126,6 +112,7 @@ namespace TicTacToe
             }
 
             Console.ReadLine();
+
 
 
 
@@ -273,5 +260,28 @@ namespace TicTacToe
             Console.WriteLine(winnerText);
             Console.ReadLine();
         }
+
+        static void GetNames(out string p1Name, out string p2Name)
+        {
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine("Hello! Please enter your names!");
+            Console.WriteLine("-------------------------------");
+            Console.Write("Player 1: ");
+            p1Name = Console.ReadLine();
+            Console.Write("Player 2: ");
+            p2Name = Console.ReadLine();
+
+        }
+
+
+        static void GetP1Symbol(string p1Name, string p2Name, out string playerChoice)
+        {
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine($"Welcome {p1Name} and {p2Name}! Lets play some tic-tac-toe!!!");
+            Console.WriteLine("------------------------------------------------------------------------");
+            Console.WriteLine($"{p1Name}, would you like to be X's or O's?");
+            playerChoice = Console.ReadLine();
+        }
+
     }
 }
