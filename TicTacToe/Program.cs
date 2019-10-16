@@ -251,6 +251,8 @@ namespace TicTacToe
         static void MakeMove(string p1Choice, string p2Choice, string p1Name, string p2Name)
         {
 
+
+            ///MOVE AS AN OPTION INSTEAD OF 1-9
             if (arr.Contains('X') || arr.Contains('O'))
             {
                 UndoMove();
