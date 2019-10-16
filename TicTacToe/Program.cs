@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
@@ -11,13 +12,18 @@ namespace TicTacToe
         static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         static int player = 1;
         static int choice;
-        static int flag = 0;
-        
-        
+        static int _flag = 0; //1 = Winner & -1 = Draw 
+
+
         static void Main(string[] args)
 
         {
             Console.Title = "TicTacToe";
+            #region Title Graphic
+
+            
+
+            
             String title = @"
        (                                                        )       
   *   ))\ )  (            *   )   (       (            *   ) ( /(       
@@ -28,66 +34,29 @@ namespace TicTacToe
   | |  | | | (__          | |    / _ \  | (__          | |  | (_) | _|  
   |_| |___| \___|         |_|   /_/ \_\  \___|         |_|   \___/|___|
 ";
-
+            #endregion
             Console.WriteLine(title.PadLeft(30));
-                Board();
-                GetNames(out string p1Name, out string p2Name);
-                GetP1Symbol(p1Name, p2Name, out string p1Choice);
-                var p2Choice = MarkChoice(p1Choice);
+            Board();
+            GetNames(out string p1Name, out string p2Name);
+            GetP1Symbol(p1Name, p2Name, out string p1Choice);
+            var p2Choice = MarkChoice(p1Choice);
 
-           do
+            do
             {
-
-                Console.Clear();
-                Console.WriteLine(title.PadLeft(30));
-                Console.WriteLine("   |" + p1Name + " is " + p1Choice + "'s|" + "  -----------------------------  |" + p2Name + " is " + p2Choice + "'s|");
-                Console.WriteLine("\n");
-
-                if (player % 2 == 0)
-                {
-                    Console.WriteLine("                             " + p2Name + "'s Turn");
-                }
-                else
-                {
-                    Console.WriteLine("                             " + p1Name + "'s Turn");
-                }
-                Board();
+                Menu(title, p1Name, p2Name, p1Choice, p2Choice);
                 Console.WriteLine();
-                Console.Write("Please select a spot 1-9 to put your mark: ");
-                choice = int.Parse(Console.ReadLine());
-                if (arr[choice] != 'X' && arr[choice] != 'O')
-                {
-                    if (player % 2 == 0)
-                    {
-                        arr[choice] = Convert.ToChar(p2Choice);
-                        player++;
-                    }
-                    else
-                    {
-                        arr[choice] = Convert.ToChar(p1Choice);
-                        player++;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Sorry, the row {0} is already taken with {1}", choice, arr[choice]);
-                    Console.WriteLine("\n");
-                    Console.WriteLine("Please wait for the board to reload...");
-                }
-
-                flag = CheckWin();
+                MakeMove(p1Choice, p2Choice);
+                _flag = CheckWin();
 
             }
-            while (flag != 1 && flag != -1);
+            while (_flag != 1 && _flag != -1);
             {
                 Console.WriteLine(title);
-                Console.Clear();// clearing the console  
-                Board();// getting filled board again  
-
+                Console.Clear();
+                Board();
             }
-
-
-            if (flag == 1)// if flag value is 1 then some one has won or means who played marked last time which has win  
+            //Checks to see if there is a winner, if so, displays the name & winner graphic
+            if (_flag == 1) 
 
             {
                 Winner();
@@ -104,21 +73,13 @@ namespace TicTacToe
             }
 
             else// if flag value is -1 the match will be draw and no one is winner  
-
-            {
-
+                {
                 Draw();
-
-            }
-
-            Console.ReadLine();
-
-
-
-
-
-
+                }
+        Console.ReadLine();
+        //End of Game
         }
+        //Creates the Board in the active state 
         private static void Board()
 
         {
@@ -134,6 +95,7 @@ namespace TicTacToe
             Console.WriteLine("                                |     |      ");
 
         }
+        //Sets Choice for Player 2
         private static string MarkChoice(string choice)
         {
 
@@ -146,8 +108,6 @@ namespace TicTacToe
                 return "X";
             }
         }
-
-        //CheckWin code was provided at c-sharpcorner.com by Sourabh Somani 
         //Seemed easier to find than reinventing the wheel
         private static int CheckWin()
 
@@ -227,6 +187,7 @@ namespace TicTacToe
                 return 0;
             }
         }
+        //Displays Winner Graphic
         private static void Winner()
         {
             string winnerText = @"
@@ -243,6 +204,7 @@ namespace TicTacToe
 ";
             Console.WriteLine(winnerText);
         }
+        //Displays Draw Graphic
         private static void Draw()
         {
             string winnerText = @"
@@ -260,7 +222,7 @@ namespace TicTacToe
             Console.WriteLine(winnerText);
             Console.ReadLine();
         }
-
+        //Get's the names of both players
         static void GetNames(out string p1Name, out string p2Name)
         {
             Console.WriteLine(Environment.NewLine);
@@ -272,8 +234,7 @@ namespace TicTacToe
             p2Name = Console.ReadLine();
 
         }
-
-
+        //Player 1 chooses if they want to be X or O
         static void GetP1Symbol(string p1Name, string p2Name, out string playerChoice)
         {
             Console.WriteLine(Environment.NewLine);
@@ -282,6 +243,59 @@ namespace TicTacToe
             Console.WriteLine($"{p1Name}, would you like to be X's or O's?");
             playerChoice = Console.ReadLine();
         }
+        //Prompts Players to make a move
+        static void MakeMove(string p1Choice, string p2Choice)
+        {
 
+            Console.Write("Please select a spot 1-9 to put your mark: ");
+            choice = int.Parse(Console.ReadLine());
+            if (arr[choice] != 'X' && arr[choice] != 'O')
+            {
+                if (player % 2 == 0)
+                {
+                    arr[choice] = Convert.ToChar(p2Choice);
+                    player++;
+                }
+                else
+                {
+                    arr[choice] = Convert.ToChar(p1Choice);
+                    player++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Sorry, the row {0} is already taken with {1}", choice, arr[choice]);
+                Console.WriteLine("\n");
+                Console.WriteLine("Please wait for the board to reload...");
+                
+            }
+
+
+        }
+        //Displays Title, Board, and help text 
+        static void Menu(string title, string p1Name, string p2Name, string p1Choice, string p2Choice)
+        {
+            Console.Clear();
+            Console.WriteLine(title.PadLeft(30));
+            Console.WriteLine($"   |{p1Name} is {p1Choice}'s| ----------------------------- |{p2Name} is {p2Choice}'s|");
+            Console.WriteLine(Environment.NewLine);
+
+            if (player % 2 == 0)
+            {
+                Console.WriteLine($"                             {p2Name}'s Turn");
+            }
+            else
+            {
+                Console.WriteLine($"                             {p1Name}'s Turn");
+            }
+            Board();
+        }
+
+        static void StackMoves(char[] stackArr, int x)
+        {
+            Stack MovesStack = new Stack();
+            
+            MovesStack.Push(stackArr[x]);
+        }
     }
 }
