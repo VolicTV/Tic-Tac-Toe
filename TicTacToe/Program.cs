@@ -30,16 +30,18 @@ namespace TicTacToe
   |_| |___| \___|         |_|   /_/ \_\  \___|         |_|   \___/|___|
 ";
 
-            Console.WriteLine(title);
+            Console.WriteLine(title.PadLeft(30));
             Board();
+            Console.WriteLine("\n");
             Console.WriteLine("Hello! Please enter your names!");
+            Console.WriteLine("-------------------------------");
             Console.Write("Player 1: ");
             String p1Name = Console.ReadLine();
             Console.Write("Player 2: ");
             String p2Name = Console.ReadLine();
-
-            Console.WriteLine("Welcome " + p1Name + " and " + p2Name + "! Lets play some tic-tac-toe!!!");
             Console.WriteLine("\n");
+            Console.WriteLine("Welcome " + p1Name + " and " + p2Name + "! Lets play some tic-tac-toe!!!");
+            Console.WriteLine("------------------------------------------------------------------------");
             Console.WriteLine(p1Name + ", would you like to be X's or O's?");
             string p1Choice = Console.ReadLine();
             string p2Choice = MarkChoice(p1Choice);
@@ -51,21 +53,21 @@ namespace TicTacToe
             {
 
                 Console.Clear();
-                Console.WriteLine(title);
-                Console.WriteLine(p1Name + ": " + p1Choice);
-                Console.WriteLine(p2Name + ": " + p2Choice);
+                Console.WriteLine(title.PadLeft(30));
+                Console.WriteLine("   |" + p1Name + " is " + p1Choice + "'s|" + "  -----------------------------  |" + p2Name + " is " + p2Choice + "'s|");
                 Console.WriteLine("\n");
+
                 if (player % 2 == 0)
                 {
-                    Console.WriteLine(p2Name + "'s Turn");
+                    Console.WriteLine("                             " + p2Name + "'s Turn");
                 }
                 else
                 {
-                    Console.WriteLine(p1Name + "'s Turn");
+                    Console.WriteLine("                             " + p1Name + "'s Turn");
                 }
-                Console.WriteLine("\n");
                 Board();
-                Console.Write("Please select which square you want to choose: ");
+                Console.WriteLine();
+                Console.Write("Please select a spot 1-9 to put your mark: ");
                 choice = int.Parse(Console.ReadLine());
                 if (arr[choice] != 'X' && arr[choice] != 'O')
                 {
@@ -102,18 +104,16 @@ namespace TicTacToe
             if (flag == 1)// if flag value is 1 then some one has won or means who played marked last time which has win  
 
             {
+                Winner();
                 int intWinner = (player % 2 + 1);
-                if(intWinner == 1)
+                if (intWinner == 1)
                 {
-                    Console.WriteLine("Player {0} has won", p1Name);
+                    Console.WriteLine("{0} has won", p1Name);
                 }
                 else
                 {
-                    Console.WriteLine("Player {0} has won", p2Name);
+                    Console.WriteLine("{0} has won", p2Name);
                 }
-
-
-                Console.WriteLine("Player {0} has won", (player % 2) + 1);
 
             }
 
@@ -121,7 +121,7 @@ namespace TicTacToe
 
             {
 
-                Console.WriteLine("Draw");
+                Draw();
 
             }
 
@@ -136,29 +136,29 @@ namespace TicTacToe
 
         {
 
-            Console.WriteLine("     |     |      ");
-            Console.WriteLine("  {0}  |  {1}  |  {2}", arr[1], arr[2], arr[3]);
-            Console.WriteLine("_____|_____|_____ ");
-            Console.WriteLine("     |     |      ");
-            Console.WriteLine("  {0}  |  {1}  |  {2}", arr[4], arr[5], arr[6]);
-            Console.WriteLine("_____|_____|_____ ");
-            Console.WriteLine("     |     |      ");
-            Console.WriteLine("  {0}  |  {1}  |  {2}", arr[7], arr[8], arr[9]);
-            Console.WriteLine("     |     |      ");
+            Console.WriteLine("                                |     |      ");
+            Console.WriteLine("                             {0}  |  {1}  |  {2}", arr[1], arr[2], arr[3]);
+            Console.WriteLine("                           _____|_____|_____ ");
+            Console.WriteLine("                                |     |      ");
+            Console.WriteLine("                             {0}  |  {1}  |  {2}", arr[4], arr[5], arr[6]);
+            Console.WriteLine("                           _____|_____|_____ ");
+            Console.WriteLine("                                |     |      ");
+            Console.WriteLine("                             {0}  |  {1}  |  {2}", arr[7], arr[8], arr[9]);
+            Console.WriteLine("                                |     |      ");
 
         }
         private static string MarkChoice(string choice)
+        {
+
+            if (choice == "X")
             {
-                
-                if (choice == "X")
-                {
-                    return "O";
-    }
-                else
-                {
-                    return "X";
-}
+                return "O";
             }
+            else
+            {
+                return "X";
+            }
+        }
 
         //CheckWin code was provided at c-sharpcorner.com by Sourabh Somani 
         //Seemed easier to find than reinventing the wheel
@@ -240,6 +240,38 @@ namespace TicTacToe
                 return 0;
             }
         }
+        private static void Winner()
+        {
+            string winnerText = @"
+                   __                                          __ 
+                  /  |                                        /  |
+     __   __   __ $$/  _______   _______    ______    ______  $$ |
+    /  | /  | /  |/  |/       \ /       \  /      \  /      \ $$ |
+    $$ | $$ | $$ |$$ |$$$$$$$  |$$$$$$$  |/$$$$$$  |/$$$$$$  |$$ |
+    $$ | $$ | $$ |$$ |$$ |  $$ |$$ |  $$ |$$    $$ |$$ |  $$/ $$/ 
+    $$ \_$$ \_$$ |$$ |$$ |  $$ |$$ |  $$ |$$$$$$$$/ $$ |       __ 
+    $$   $$   $$/ $$ |$$ |  $$ |$$ |  $$ |$$       |$$ |      /  |
+    $$$$$/$$$$/  $$/ $$/   $$/ $$/   $$/  $$$$$$$/ $$/       $$/ 
 
+";
+            Console.WriteLine(winnerText);
+        }
+        private static void Draw()
+        {
+            string winnerText = @"
+      _______   _______    ______   __       __ 
+    /       \ /       \  /      \ /  |  _  /  |
+    $$$$$$$  |$$$$$$$  |/$$$$$$  |$$ | / \ $$ |
+    $$ |  $$ |$$ |__$$ |$$ |__$$ |$$ |/$  \$$ |
+    $$ |  $$ |$$    $$< $$    $$ |$$ /$$$  $$ |
+    $$ |  $$ |$$$$$$$  |$$$$$$$$ |$$ $$/$$ $$ |
+    $$ |__$$ |$$ |  $$ |$$ |  $$ |$$$$/  $$$$ |
+    $$    $$/ $$ |  $$ |$$ |  $$ |$$$/    $$$ |
+    $$$$$$$/  $$/   $$/ $$/   $$/ $$/      $$/
+
+";
+            Console.WriteLine(winnerText);
+            Console.ReadLine();
+        }
     }
 }
