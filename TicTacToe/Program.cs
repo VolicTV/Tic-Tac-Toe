@@ -102,6 +102,16 @@ namespace TicTacToe
             if (flag == 1)// if flag value is 1 then some one has won or means who played marked last time which has win  
 
             {
+                int intWinner = (player % 2 + 1);
+                if(intWinner == 1)
+                {
+                    Console.WriteLine("Player {0} has won", p1Name);
+                }
+                else
+                {
+                    Console.WriteLine("Player {0} has won", p2Name);
+                }
+
 
                 Console.WriteLine("Player {0} has won", (player % 2) + 1);
 
