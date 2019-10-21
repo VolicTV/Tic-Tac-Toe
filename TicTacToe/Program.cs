@@ -10,17 +10,22 @@ namespace TicTacToe
     {
         //Make Array for the board 
         static char[] arr = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        
         static int player = 1;
         static int choice;
         private static string p1Name;
         private static string p2Name;
         static int _flag = 0; //1 = Winner & -1 = Draw
-        static Stack<char[]> MovesStack = new Stack<char[]>();
-
+        static int versionCount = 0;
+        static int version = 0;
+        static int columns = 0; 
+        static char[,] arrBoards = new char[10,10];
+        static string playerInput;
 
         static void Main(string[] args)
 
         {
+            
             Console.Title = "TicTacToe";
             #region Title Graphic
 
@@ -43,43 +48,57 @@ namespace TicTacToe
             GetNames(out p1Name, out p2Name);
             GetP1Symbol(p1Name, p2Name, out string p1Choice);
             var p2Choice = MarkChoice(p1Choice);
+            
+            
+                    do
+                    {
 
-            do
-            {
-                Menu(title, p1Name, p2Name, p1Choice, p2Choice);
-                Console.WriteLine();
-                MakeMove(p1Choice, p2Choice, p1Name, p2Name);
-                MovesStack.Push(arr);
-                _flag = CheckWin();
-
-            }
-            while (_flag != 1 && _flag != -1);
-            {
-                Console.WriteLine(title);
-                Console.Clear();
-                Board();
-            }
-            //Checks to see if there is a winner, if so, displays the name & winner graphic
-            if (_flag == 1) 
-
-            {
-                Winner();
-                int intWinner = (player % 2 + 1);
-                if (intWinner == 1)
+                        Menu(title, p1Name, p2Name, p1Choice, p2Choice);
+                        Console.WriteLine();
+                        MakeMove(p1Choice, p2Choice, p1Name, p2Name);
+                if (playerInput != "U")
                 {
-                    Console.WriteLine("{0} has won", p1Name);
-                }
-                else
-                {
-                    Console.WriteLine("{0} has won", p2Name);
-                }
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        arrBoards[version, i] = arr[i];
+                    }
 
+
+                    _flag = CheckWin();
+                    version++;
+                }
             }
+                    while (_flag != 1 && _flag != -1);
+                    {
+                        Console.WriteLine(title);
+                        Console.Clear();
+                        Board();
+                        
+                    
+                    }
+                    //Checks to see if there is a winner, if so, displays the name & winner graphic
+                    if (_flag == 1)
 
-            else// if flag value is -1 the match will be draw and no one is winner  
-                {
-                Draw();
-                }
+                    {
+                        Winner();
+                        int intWinner = (player % 2 + 1);
+                        if (intWinner == 1)
+                        {
+                            Console.WriteLine("{0} has won", p1Name);
+                        }
+                        else
+                        {
+                            Console.WriteLine("{0} has won", p2Name);
+                        }
+
+                    }
+
+                    else// if flag value is -1 the match will be draw and no one is winner  
+                    {
+                        Draw();
+                    }
+                
+            
         Console.ReadLine();
         //End of Game
         }
@@ -250,39 +269,46 @@ namespace TicTacToe
         //Prompts Players to make a move
         static void MakeMove(string p1Choice, string p2Choice, string p1Name, string p2Name)
         {
+            Console.Write("Please select a spot 1-9 to put your mark");
+            if(player > 1)
+            {
+                Console.Write(" OR 'U' to go back a Move: ");
+            }
+            else { Console.Write(": "); }
 
+            playerInput = Console.ReadLine();
 
-            ///MOVE AS AN OPTION INSTEAD OF 1-9
-            if (arr.Contains('X') || arr.Contains('O'))
+            if (playerInput == "U" && player > 2)
             {
                 UndoMove();
-                
-            }
-
-            Console.Write("Please select a spot 1-9 to put your mark: ");
-            choice = int.Parse(Console.ReadLine());
-            if (arr[choice] != 'X' && arr[choice] != 'O')
-            {
-                if (player % 2 == 0)
-                {
-                    arr[choice] = Convert.ToChar(p2Choice);
-                    player++;
-                }
-                else
-                {
-                    arr[choice] = Convert.ToChar(p1Choice);
-                    player++;
-                }
             }
             else
             {
-                Console.WriteLine("Sorry, the row {0} is already taken with {1}", choice, arr[choice]);
-                Console.WriteLine("\n");
-                Console.WriteLine("Please wait for the board to reload...");
-                
-            }
-            
+                choice = int.Parse(playerInput);
 
+                if (arr[choice] != 'X' && arr[choice] != 'O')
+                {
+                    if (player % 2 == 0)
+                    {
+                        arr[choice] = Convert.ToChar(p2Choice);
+                        player++;
+                    }
+                    else
+                    {
+                        arr[choice] = Convert.ToChar(p1Choice);
+                        player++;
+                    }
+                }
+                else
+                {
+
+                    Console.WriteLine("Sorry, the row {0} is already taken with {1}", choice, arr[choice]);
+                    Console.WriteLine("\n");
+                    Console.WriteLine("Please wait for the board to reload...");
+
+                }
+
+            }
             
             //StackMoves(arr, player);
         }
@@ -322,7 +348,9 @@ namespace TicTacToe
 
             if (undo == "Y" || undo == "y")
             {
-                arr = MovesStack.Pop();
+
+                version--;
+                Board();
                 player--;
                 
 
