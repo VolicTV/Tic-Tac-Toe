@@ -57,54 +57,7 @@ namespace TicTacToe
             MarkChoice();
             RunGame();
         }
-        /*
-        //    do
-        //    {
-        //        Menu();
-        //        Console.WriteLine();
-        //        MakeMove();
-        //        if (_playerInput == "U") continue;
-        //        for (int i = 0; i < arr.Length; i++)
-        //        {
-        //            ArrBoards[_version, i] = arr[i];
-        //        }
-        //        _flag = CheckWin();
-        //        _version++;
-        //    }
-        //    while (_flag != 1 && _flag != -1);
-        //    {
-        //        Console.WriteLine(title);
-        //        Console.Clear();
-        //        Board();
-
-
-        //    }
-        //    //Checks to see if there is a winner, if so, displays the name & winner graphic
-        //    if (_flag == 1)
-        //    {
-        //        Winner();
-        //        int intWinner = (player % 2 + 1);
-        //        if (intWinner == 1)
-        //        {
-        //            //Player 1 won
-        //            Console.WriteLine("{0} HAS WON!!!! TOUGH LUCK {1}", p1Name, p2Name);
-        //            _p1Wins++;
-        //        }
-        //        else
-        //        {
-        //            //Player 2 won
-        //            Console.WriteLine("{0} HAS WON!!!! TOUGH LUCK {1}", p2Name, p1Name);
-        //            _p2Wins++;
-        //        }
-        //    }
-        //    else// Draw = -1: Method displays the draw picture and text 
-        //    {
-        //        Draw();
-        //    }
-        //    Console.ReadLine();
-        //    //End of Game
-        //}
-        */
+      
         //Displays the board 
         private static void Board()
 
